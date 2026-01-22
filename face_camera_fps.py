@@ -28,8 +28,6 @@ while True:
         print("Failed to grab frame")
         break
 
-    # ---------- Grayscale (Sprint 1 Task) ----------
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     # ---------- FPS Calculation ----------
     current_time = time.time()
