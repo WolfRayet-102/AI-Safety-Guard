@@ -15,6 +15,18 @@ options = vision.FaceLandmarkerOptions(
 
 landmarker = vision.FaceLandmarker.create_from_options(options)
 
+
+# ---------- Eye Landmark Indices ----------
+LEFT_EYE_IDX = [
+    33, 133, 160, 159, 158, 144,
+    145, 153, 154, 155, 173, 157
+]
+
+RIGHT_EYE_IDX = [
+    362, 263, 387, 386, 385, 373,
+    374, 380, 381, 382, 398, 384
+]
+
 # ---------- Camera Setup ----------
 cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
@@ -46,10 +58,19 @@ while True:
     # ---------- Draw Face Landmarks ----------
     if result.face_landmarks:
         h, w = frame.shape[:2]
-        for landmark in result.face_landmarks[0]:
-            x = int(landmark.x * w)
-            y = int(landmark.y * h)
-            cv2.circle(frame, (x, y), 1, (0, 255, 0), -1)
+        landmarks= result.face_landmarks[0]
+        
+        # Draw LEFT eye
+        for idx in LEFT_EYE_IDX:
+            x = int(landmarks[idx].x * w)
+            y = int(landmarks[idx].y * h)
+            cv2.circle(frame, (x, y), 2, (0, 255, 0), -1)
+
+        # Draw RIGHT eye
+        for idx in RIGHT_EYE_IDX:
+            x = int(landmarks[idx].x * w)
+            y = int(landmarks[idx].y * h)
+            cv2.circle(frame, (x, y), 2, (0, 0, 255), -1)
 
     # ---------- Overlays ----------
     h, w = frame.shape[:2]
@@ -73,7 +94,7 @@ while True:
         2
     )
 
-    cv2.imshow("Camera + Face Detection + FPS", frame)
+    cv2.imshow("Eye Landmarks", frame)
 
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break
